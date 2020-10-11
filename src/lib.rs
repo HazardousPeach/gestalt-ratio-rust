@@ -14,6 +14,7 @@ mod tests {
     #[test]
     /// This test and it's expected output are taken from this stack
     /// overflow post:
+    /// https://stackoverflow.com/questions/35517353/how-does-pythons-sequencematcher-work
     fn stack_overflow_example() {
         let s1 = "Ebojfm Mzpm";
         let s2 = "Ebfo ef Mfpo";
