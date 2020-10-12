@@ -1,3 +1,8 @@
+
+extern crate unicode_segmentation;
+
+use unicode_segmentation::UnicodeSegmentation;
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -23,6 +28,18 @@ mod tests {
         assert_eq!(score1, 0.6086956521739131, "{}", score1);
         assert_eq!(score2, 0.5217391304347826, "{}", score2);
     }
+
+    #[test]
+    /// Make sure that this doesn't break with unicode
+    fn unicode_example() {
+        let s1 = "x² + y²";
+        let s2 = "y² + z²";
+
+        let score = gestalt_ratio(s1, s2);
+        // Got the expected output of this example by running it in
+        // python3.8 difflib SequenceMatcher.
+        assert_eq!(score, 0.7142857142857143);
+    }
 }
 
 /// Ratcliff-Obershelp String Matching, otherwise known as Gestalt
@@ -31,14 +48,14 @@ mod tests {
 /// common substrings. It is described in this wikipedia page:
 /// https://en.wikipedia.org/wiki/Gestalt_Pattern_Matching
 pub fn gestalt_ratio(s1: &str, s2: &str) -> f64 {
-    fn longest_common_substring_idxs(s1: &str, s2: &str) -> ((usize, usize), (usize, usize)) {
+    fn longest_common_subseq_idxs<T: Eq>(s1: &[T], s2: &[T]) -> ((usize, usize), (usize, usize)) {
         let mut max_length = 0;
         let mut ending_index_1 = s1.len();
         let mut ending_index_2 = s2.len();
         let mut lookup = vec![vec![0; s2.len() + 1]; s1.len() + 1];
 
-        for (i, c1) in s1.chars().enumerate() {
-            for (j, c2) in s2.chars().enumerate() {
+        for (i, c1) in s1.iter().enumerate() {
+            for (j, c2) in s2.iter().enumerate() {
                 if c1 == c2 {
                     lookup[i + 1][j + 1] = lookup[i][j] + 1;
                     if lookup[i + 1][j + 1] > max_length {
@@ -54,24 +71,27 @@ pub fn gestalt_ratio(s1: &str, s2: &str) -> f64 {
             (ending_index_2 - max_length, ending_index_2),
         )
     }
-    fn matching_characters(s1: &str, s2: &str) -> usize {
-        let ((l1, r1), (l2, r2)) = longest_common_substring_idxs(s1, s2);
+    fn matching_items<T: Eq>(s1: &[T], s2: &[T]) -> usize {
+        let ((l1, r1), (l2, r2)) = longest_common_subseq_idxs(s1, s2);
         assert_eq!(r1 - l1, r2 - l2);
         if l1 == r1 {
             0
         } else {
             let left_rec = if l1 > 0 && l2 > 0 {
-                matching_characters(&s1[..l1], &s2[..l2])
+                matching_items(&s1[..l1], &s2[..l2])
             } else {
                 0
             };
             let right_rec = if r1 < s1.len() && r2 < s2.len() {
-                matching_characters(&s1[r1..], &s2[r2..])
+                matching_items(&s1[r1..], &s2[r2..])
             } else {
                 0
             };
             left_rec + (r1 - l1) + right_rec
         }
     }
-    (2.0 * matching_characters(s1, s2) as f64) / ((s1.len() + s2.len()) as f64)
+    let s1_graphemes: Vec<&str> = UnicodeSegmentation::graphemes(s1, true).collect();
+    let s2_graphemes: Vec<&str> = UnicodeSegmentation::graphemes(s2, true).collect();
+    (2.0 * matching_items(&s1_graphemes, &s2_graphemes) as f64) /
+        ((s1_graphemes.len() + s2_graphemes.len()) as f64)
 }

@@ -13,3 +13,5 @@ categories = ["algorithms", "text-processing"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
+unicode-segmentation = "*"
