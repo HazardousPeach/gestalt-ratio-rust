@@ -14,4 +14,4 @@ categories = ["algorithms", "text-processing"]
 
 [dependencies]
 
-unicode-segmentation = "*"
+unicode-segmentation = "^1.6.0"
