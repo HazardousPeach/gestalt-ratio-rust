@@ -59,11 +59,7 @@ mod tests {
     }
 }
 
-/// Ratcliff-Obershelp String Matching, otherwise known as Gestalt
-/// Pattern Matching. This function computes a similarity score
-/// between two strings, based on recursively looking at longest
-/// common substrings. It is described in this wikipedia page:
-/// https://en.wikipedia.org/wiki/Gestalt_Pattern_Matching
+/// Produces a string similarity score between 0 and 1.
 pub fn gestalt_ratio(s1: &str, s2: &str) -> f64 {
     fn longest_common_subseq_idxs<T: Eq>(s1: &[T], s2: &[T]) -> ((usize, usize), (usize, usize)) {
         let mut max_length = 0;
