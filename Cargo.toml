@@ -7,7 +7,7 @@ description = "Calculate the gestalt pattern matching ratio between two strings"
 readme = "README.md"
 repository = "https://github.com/HazardousPeach/gestalt-ratio-rust/"
 license = "GPL-3.0"
-keywords = ["string", "strings", "gestalt", "ratio", "similarity", "pattern", "matching", "ratcliff", "obershelp"]
+keywords = ["string", "gestalt", "ratio", "similarity", "matching"]
 categories = ["algorithms", "text-processing"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
