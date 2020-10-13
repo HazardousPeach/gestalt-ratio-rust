@@ -1,6 +1,6 @@
 [package]
 name = "gestalt_ratio"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Alex Sanchez-Stern <alex.sanchezstern@gmail.com>"]
 edition = "2018"
 description = "Calculate the gestalt pattern matching ratio between two strings"
