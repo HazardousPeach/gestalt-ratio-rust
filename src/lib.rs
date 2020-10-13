@@ -1,3 +1,20 @@
+//! Ratcliff-Obershelp String Matching
+//! ==================================
+//!
+//! Ratcliff-Obershelp String Matching, otherwise known as Gestalt
+//! Pattern Matching. This crate contains a single function, which
+//! computes a similarity score between two strings, based on
+//! recursively looking at longest common substrings. The algorithm is
+//! described in this wikipedia page:
+//! https://en.wikipedia.org/wiki/Gestalt_Pattern_Matching
+//!
+//! Unicode Support
+//! ---------------
+//!
+//! As of version 0.2.0 this crate supports unicode strings. Strings
+//! are compared using their extended graphemes, as provided by the
+//! unicode_segmentation crate.
+
 
 extern crate unicode_segmentation;
 
